@@ -4,8 +4,8 @@ import {Text,View,StyleSheet} from "react-native";
 function A(): React.JSX.Element {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hello, World!</Text>
-      <Text style={styles.text}>Welcome to React Native!</Text>
+      <Text style={styles.text}>H</Text>
+      <Text style={styles.text}>Welcom</Text>
     </View>
   );
 }
