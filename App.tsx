@@ -15,8 +15,8 @@ import React from 'react';
 function App(): React.JSX.Element {
    return (
     <View style={{ flex: 1, backgroundColor: '#F5FCFF' }}>
-       <Text>cdc</Text>
-       
+       <Text>cdcdc</Text>
+       <Text>jhjk,n</Text>
     </View>
   );
 }
