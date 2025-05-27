@@ -1,68 +1,37 @@
-import React,{useState,useEffect} from 'react';
- import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View
-} from 'react-native';
-import { getAuth, onAuthStateChanged } from '@react-native-firebase/auth';
+import 'react-native-gesture-handler';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import SignAndSignUp from './signandsignup';
+import HomeScreen from './HomeScreen';
+import useAuth from './hooks/useAuth';
 
-  
-function App() {
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<{email: string | null} | null>(null);
+const Stack = createStackNavigator();
 
-  function handleAuthStateChanged(user: {email: string | null} | null) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
-   useEffect(() => {
-    const subscriber = onAuthStateChanged(getAuth(), (user) => {
-      if (user) {
-        setUser({ email: user.email });
-      } else {
-        setUser(null);
-      }
-      if (initializing) setInitializing(false);
-    });
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-   if (initializing) return null;
-    if (!user) {
-    return (
-      <View>
-        <Text>Login</Text>
-      </View>
-    );
-  }
-   return (
-    <View style={{ flex: 1, backgroundColor: 'red',justifyContent: 'center', alignItems: 'center',padding:22 }}>
-       <Text>Welcome {user.email ?? "User"}</Text>
-    </View>
+function AuthStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Auth" component={SignAndSignUp} options={{ headerShown: false }} />
+    </Stack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+function AppStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+}
+
+function App() {
+  const user = useAuth();
+  return (
+    <NavigationContainer>
+      {user ? <AppStack /> : <AuthStack />}
+    </NavigationContainer>
+  );
+}
 
 export default App;
+
